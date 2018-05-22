@@ -43,6 +43,8 @@ else
 end
 % End initialization code - DO NOT EDIT
 
+global filename;
+global player;
 
 % --- Executes just before untitled is made visible.
 function untitled_OpeningFcn(hObject, eventdata, handles, varargin)
@@ -60,7 +62,7 @@ guidata(hObject, handles);
 
 % UIWAIT makes untitled wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
-
+end
 
 % --- Outputs from this function are returned to the command line.
 function varargout = untitled_OutputFcn(hObject, eventdata, handles) 
@@ -71,21 +73,43 @@ function varargout = untitled_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
-
+end
 
 % --- Executes on button press in play.
 function play_Callback(hObject, eventdata, handles)
 % hObject    handle to play (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+play(player)
 % Hint: get(hObject,'Value') returns toggle state of play
-
+end
 
 % --- Executes on button press in pause.
 function pause_Callback(hObject, eventdata, handles)
 % hObject    handle to pause (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+toggle_state = get(hObject, 'Value')
+if(toggle_state)
+   pause(player)
 % Hint: get(hObject,'Value') returns toggle state of pause
+end
+end
+
+% --- Executes on button press in browse.
+function browse_Callback(hObject, eventdata, handles)
+% hObject    handle to play (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[file, path] = uigetfile('*.mp3','Select an Audio File:')
+playSong(file, path)
+% Hint: get(hObject,'Value') returns toggle state of browse
+end
+
+function playSong(file, path)
+    filename = path + file;
+    [data, rate] = audioread(filename);
+    player = audioplayer(data, rate)
+end
+
+end

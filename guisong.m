@@ -58,9 +58,6 @@ handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
 
-global filename;
-global player;
-
 
 % UIWAIT makes guisong wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -98,7 +95,11 @@ function play_btn_Callback(hObject, eventdata, handles)
 % hObject    handle to play_btn (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-play(player);
+player = handles.player;
+
+resume(handles.player);
+handles.player = player;
+guidata(hObject, handles);
 
 
 % --- Executes on button press in pause_btn.
@@ -106,7 +107,11 @@ function pause_btn_Callback(hObject, eventdata, handles)
 % hObject    handle to pause_btn (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-pause(player)
+player = handles.player;
+
+pause(player);
+handles.player = player;
+guidata(hObject, handles);
 
 
 % --- Executes on button press in browse_btn.
@@ -117,9 +122,10 @@ function browse_btn_Callback(hObject, eventdata, handles)
 
 % allow user to browse and only choose an mp3 file
 [file, path] = uigetfile('*.mp3','Select an Audio File:');
-playSong(file, path)
-
-function playSong(file, path)
-filename = path + file;
+filename = strcat(path, file);
 [data, rate] = audioread(filename);
 player = audioplayer(data, rate);
+handles.filename = filename;
+handles.player = player;
+guidata(hObject, handles);
+

@@ -23,7 +23,7 @@ function varargout = guisong(varargin)
 
 % Edit the above text to modify the response to help guisong
 
-% Last Modified by GUIDE v2.5 29-May-2018 16:41:34
+% Last Modified by GUIDE v2.5 29-May-2018 17:09:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -123,9 +123,9 @@ function browse_btn_Callback(hObject, eventdata, handles)
 % allow user to browse and only choose an mp3 file
 [file, path] = uigetfile('*.mp3','Select an Audio File:');
 filename = strcat(path, file);
+set(handles.data_panel, 'Title', file);
 [data, rate] = audioread(filename);
 player = audioplayer(data, rate);
 handles.filename = filename;
 handles.player = player;
 guidata(hObject, handles);
-
